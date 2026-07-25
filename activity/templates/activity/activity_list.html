@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2>Internship Activities</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'activity_create' %}" class="btn btn-primary">+ Add Activity</a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Activity</th>
+                        <th>Description</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td>{{ activity.date_ohin }}</td>
+                        <td>
+                            {% if activity.oras_hahu and activity.oras_hotu %}
+                                {{ activity.oras_hahu|time:"H:i" }} - {{ activity.oras_hotu|time:"H:i" }}
+                            {% elif activity.oras_hahu %}
+                                {{ activity.oras_hahu|time:"H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ activity.atividade }}</strong></td>
+                        <td>{{ activity.deskrisaun|truncatechars:50 }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'activity_update' activity.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'activity_delete' activity.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No activities recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
